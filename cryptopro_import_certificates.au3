@@ -1,32 +1,50 @@
 #include <GuiListView.au3>
 #include <Array.au3>
 
-$kriptoprocsp = 'C:\Windows\System32\rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
-Run($kriptoprocsp)
-WinWait("КриптоПро CSP","Версия ядра СКЗИ")
+$CriptoPro = 'C:\Windows\System32\rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
+$hCriptoPro = "КриптоПро CSP"
+$tCriptoProTab1 = "Версия ядра СКЗИ"
+$tCriptoProTab2 = "Считыватели закрытых ключей"
+$tCriptoProTab3 = "Сертификаты в контейнере закрытого ключа"
+$hCertsInPrivContainer = "Сертификаты в контейнере закрытого ключа"
+$tCertsInPrivContainerStep1 = "Имя ключевого контейнера"
+$tCertsInPrivContainerStep2 = "Просмотрите и выберите сертификат"
+$tCriptoProCSPSelectContainer = "Выбор ключевого контейнера"
+$tInstallButton = "Установить"
+
+$kViewCertsInContainerButton = "к"
+$kBrowseButton = "б"
+$kNextButton = "д"
+$kBackButton = "н"
+
+
+
+
+Run($CriptoPro)
+WinWait($hCriptoPro,$tCriptoProTab1)
 BlockInput($BI_DISABLE)
-If Not WinActive("КриптоПро CSP","Версия ядра СКЗИ") Then WinActivate("КриптоПро CSP","Версия ядра СКЗИ")
-WinWaitActive("КриптоПро CSP","Версия ядра СКЗИ")
+If Not WinActive($hCriptoPro,$tCriptoProTab1) Then WinActivate($hCriptoPro,$tCriptoProTab1)
+WinWaitActive($hCriptoPro,$tCriptoProTab1)
 
 Send("^{TAB}")
 
-WinWaitActive("КриптоПро CSP","Считыватели закрытых ключей")
+WinWaitActive($hCriptoPro,$tCriptoProTab2)
 
 Send("^{TAB}")
 
-WinWaitActive("КриптоПро CSP","Сертификаты в контейнере закрытого ключа")
+WinWaitActive($hCriptoPro,$tCriptoProTab3)
 
-Send("{ALT}{!к}")
+Send("{ALTDOWN}{" & $kViewCertsInContainerButton & "}{ALTUP}")
 BlockInput($BI_ENABLE)
 
-WinWait("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера")
-If Not WinActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера") Then WinActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера")
+WinWait($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
+If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1) Then WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 BlockInput($BI_DISABLE)
-WinWaitActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера")
+WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 
-Send("{ALT}{!б}")
-$sTitle = 'КриптоПро CSP'
-$sText = 'Выбор ключевого контейнера'
+Send("{ALTDOWN}{" & $kBrowseButton & "}{ALTUP}")
+$sTitle = $hCriptoPro
+$sText = $tCriptoProCSPSelectContainer
 $hWin = WinWait($sTitle, $sText)
 Sleep(2000)
 $hListView = ControlGetHandle($hWin, '', '')
@@ -41,13 +59,13 @@ if $iCountRow > 0 Then
 EndIf
 
 Send("{ESC}")
-WinWaitActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера", 1)
-If Not WinActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера") Then WinActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера")
+WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1, 1)
+If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1) Then WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 
 ;MsgBox(64, "Information", "Item Count: " & $iCountRow)
 
 For $i = 0 to $iCountRow-1
-    Send("{ALT}{!б}")
+    Send("{ALTDOWN}{" & $kBrowseButton & "}{ALTUP}")
     $hWin = WinWait($sTitle)
     While Not ControlCommand($sTitle, '', 'OK', 'IsEnabled', '')
         Sleep(500)
@@ -56,29 +74,29 @@ For $i = 0 to $iCountRow-1
     _GUICtrlListView_SetItemFocused($hListView, $i)
 
     Send("{ENTER}")
-    If Not WinActive("КриптоПро CSP","Выбор ключевого контейнера") Then WinActivate("Сертификаты в контейнере закрытого ключа","")
-    WinWaitActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера")
-    Send("{ALT}{!д}")
-	$hWnd = WinWait("Сертификаты в контейнере закрытого ключа", "Установить", 5)
+    If Not WinActive($hCriptoPro,$tCriptoProCSPSelectContainer) Then WinActivate($hCertsInPrivContainer,"")
+    WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
+    Send("{ALTDOWN}{" & $kNextButton & "}{ALTUP}")
+	$hWnd = WinWait($hCertsInPrivContainer, $tInstallButton, 5)
 	If Not $hWnd Then
 	    Send("{ENTER}") ; error
-        If Not WinActive("Сертификаты в контейнере закрытого ключа","Имя ключевого контейнера") Then Send("{ENTER}") ; other error?
+        If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1) Then Send("{ENTER}") ; other error?
     Else
-        Send("{ALT}{!н}")
+        Send("{ALTDOWN}{" & $kBackButton & "}{ALTUP}")
 
         BlockInput($BI_ENABLE)
 
-        WinWaitActive("КриптоПро CSP","Выбор ключевого контейнера")
+        WinWaitActive($hCriptoPro,$tCriptoProCSPSelectContainer)
         Send("{ENTER}")
-        WinWaitActive("Сертификаты в контейнере закрытого ключа","Просмотрите и выберите сертификат",1)
-        If Not WinActive("Сертификаты в контейнере закрытого ключа","Просмотрите и выберите сертификат") Then Send("{ENTER}") ; if already exist
+        WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep2,1)
+        If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep2) Then Send("{ENTER}") ; if already exist
     EndIf
-    WinWaitActive("Сертификаты в контейнере закрытого ключа","")
+    WinWaitActive($hCertsInPrivContainer,"")
     BlockInput($BI_DISABLE)
-	Send("{ALT}{!н}")
+	Send("{ALTDOWN}{" & $kBackButton & "}{ALTUP}")
  Next
 Send("{ESC}")
-If Not WinActive("КриптоПро CSP","") Then WinActivate("КриптоПро CSP","")
-WinWaitActive("КриптоПро CSP","")
+If Not WinActive($hCriptoPro,"") Then WinActivate($hCriptoPro,"")
+WinWaitActive($hCriptoPro,"")
 Send("{ESC}")
 BlockInput($BI_ENABLE)
