@@ -1,15 +1,15 @@
 #include <GuiListView.au3>
 #include <Array.au3>
 
-$CriptoPro = 'rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
-$hCriptoPro = "КриптоПро CSP"
-$tCriptoProTab1 = "Версия ядра СКЗИ"
-$tCriptoProTab2 = "Считыватели закрытых ключей"
-$tCriptoProTab3 = "Сертификаты в контейнере закрытого ключа"
+$CryptoPro = 'rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
+$hCryptoPro = "КриптоПро CSP"
+$tCryptoProTab1 = "Версия ядра СКЗИ"
+$tCryptoProTab2 = "Считыватели закрытых ключей"
+$tCryptoProTab3 = "Сертификаты в контейнере закрытого ключа"
 $hCertsInPrivContainer = "Сертификаты в контейнере закрытого ключа"
 $tCertsInPrivContainerStep1 = "Имя ключевого контейнера"
 $tCertsInPrivContainerStep2 = "Просмотрите и выберите сертификат"
-$tCriptoProCSPSelectContainer = "Выбор ключевого контейнера"
+$tCryptoProCSPSelectContainer = "Выбор ключевого контейнера"
 $tInstallButton = "Установить"
 
 $kViewCertsInContainerButton = "к"
@@ -20,19 +20,19 @@ $kBackButton = "н"
 
 
 
-Run($CriptoPro)
-WinWait($hCriptoPro,$tCriptoProTab1)
+Run($CryptoPro)
+WinWait($hCryptoPro,$tCryptoProTab1)
 ;BlockInput($BI_DISABLE)`
-If Not WinActive($hCriptoPro,$tCriptoProTab1) Then WinActivate($hCriptoPro,$tCriptoProTab1)
-WinWaitActive($hCriptoPro,$tCriptoProTab1)
+If Not WinActive($hCryptoPro,$tCryptoProTab1) Then WinActivate($hCryptoPro,$tCryptoProTab1)
+WinWaitActive($hCryptoPro,$tCryptoProTab1)
 
 Send("^{TAB}")
 
-WinWaitActive($hCriptoPro,$tCriptoProTab2)
+WinWaitActive($hCryptoPro,$tCryptoProTab2)
 
 Send("^{TAB}")
 
-WinWaitActive($hCriptoPro,$tCriptoProTab3)
+WinWaitActive($hCryptoPro,$tCryptoProTab3)
 
 Send("{ALTDOWN}{" & $kViewCertsInContainerButton & "}{ALTUP}")
 ;BlockInput($BI_ENABLE)
@@ -43,8 +43,8 @@ If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1) Then WinAct
 WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 
 Send("{ALTDOWN}{" & $kBrowseButton & "}{ALTUP}")
-$sTitle = $hCriptoPro
-$sText = $tCriptoProCSPSelectContainer
+$sTitle = $hCryptoPro
+$sText = $tCryptoProCSPSelectContainer
 $hWin = WinWait($sTitle, $sText)
 Sleep(2000)
 $hListView = ControlGetHandle($hWin, '', '')
@@ -74,7 +74,7 @@ For $i = 0 to $iCountRow-1
     _GUICtrlListView_SetItemFocused($hListView, $i)
 
     Send("{ENTER}")
-    If Not WinActive($hCriptoPro,$tCriptoProCSPSelectContainer) Then WinActivate($hCertsInPrivContainer,"")
+    If Not WinActive($hCryptoPro,$tCryptoProCSPSelectContainer) Then WinActivate($hCertsInPrivContainer,"")
     WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
     Send("{ALTDOWN}{" & $kNextButton & "}{ALTUP}")
 	$hWnd = WinWait($hCertsInPrivContainer, $tInstallButton, 5)
@@ -86,7 +86,7 @@ For $i = 0 to $iCountRow-1
 
         ;BlockInput($BI_ENABLE)
 
-        WinWaitActive($hCriptoPro,$tCriptoProCSPSelectContainer)
+        WinWaitActive($hCryptoPro,$tCryptoProCSPSelectContainer)
         Send("{ENTER}")
         WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep2,1)
         If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep2) Then Send("{ENTER}") ; if already exist
@@ -96,7 +96,7 @@ For $i = 0 to $iCountRow-1
 	Send("{ALTDOWN}{" & $kBackButton & "}{ALTUP}")
  Next
 Send("{ESC}")
-If Not WinActive($hCriptoPro,"") Then WinActivate($hCriptoPro,"")
-WinWaitActive($hCriptoPro,"")
+If Not WinActive($hCryptoPro,"") Then WinActivate($hCryptoPro,"")
+WinWaitActive($hCryptoPro,"")
 Send("{ESC}")
 ;BlockInput($BI_ENABLE)
