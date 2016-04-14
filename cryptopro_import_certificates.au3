@@ -1,7 +1,7 @@
 #include <GuiListView.au3>
 #include <Array.au3>
 
-$CriptoPro = 'C:\Windows\System32\rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
+$CriptoPro = 'rundll32.exe shell32.dll,Control_RunDLL "C:\Program Files\Crypto Pro\CSP\cpconfig.cpl"'
 $hCriptoPro = "КриптоПро CSP"
 $tCriptoProTab1 = "Версия ядра СКЗИ"
 $tCriptoProTab2 = "Считыватели закрытых ключей"
