@@ -1,4 +1,4 @@
-# CryptoproImportAllCertsTool
+# CryptoPro Import All Certs Tool
 
 
 This utility allows you to automatically import all found certificates of CryptoPro to Windows registry.
