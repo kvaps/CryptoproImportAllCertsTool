@@ -22,7 +22,7 @@ $kBackButton = "н"
 
 Run($CriptoPro)
 WinWait($hCriptoPro,$tCriptoProTab1)
-BlockInput($BI_DISABLE)
+;BlockInput($BI_DISABLE)`
 If Not WinActive($hCriptoPro,$tCriptoProTab1) Then WinActivate($hCriptoPro,$tCriptoProTab1)
 WinWaitActive($hCriptoPro,$tCriptoProTab1)
 
@@ -35,11 +35,11 @@ Send("^{TAB}")
 WinWaitActive($hCriptoPro,$tCriptoProTab3)
 
 Send("{ALTDOWN}{" & $kViewCertsInContainerButton & "}{ALTUP}")
-BlockInput($BI_ENABLE)
+;BlockInput($BI_ENABLE)
 
 WinWait($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1) Then WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
-BlockInput($BI_DISABLE)
+;BlockInput($BI_DISABLE)
 WinWaitActive($hCertsInPrivContainer,$tCertsInPrivContainerStep1)
 
 Send("{ALTDOWN}{" & $kBrowseButton & "}{ALTUP}")
@@ -84,7 +84,7 @@ For $i = 0 to $iCountRow-1
     Else
         Send("{ALTDOWN}{" & $kBackButton & "}{ALTUP}")
 
-        BlockInput($BI_ENABLE)
+        ;BlockInput($BI_ENABLE)
 
         WinWaitActive($hCriptoPro,$tCriptoProCSPSelectContainer)
         Send("{ENTER}")
@@ -92,11 +92,11 @@ For $i = 0 to $iCountRow-1
         If Not WinActive($hCertsInPrivContainer,$tCertsInPrivContainerStep2) Then Send("{ENTER}") ; if already exist
     EndIf
     WinWaitActive($hCertsInPrivContainer,"")
-    BlockInput($BI_DISABLE)
+    ;BlockInput($BI_DISABLE)
 	Send("{ALTDOWN}{" & $kBackButton & "}{ALTUP}")
  Next
 Send("{ESC}")
 If Not WinActive($hCriptoPro,"") Then WinActivate($hCriptoPro,"")
 WinWaitActive($hCriptoPro,"")
 Send("{ESC}")
-BlockInput($BI_ENABLE)
+;BlockInput($BI_ENABLE)
